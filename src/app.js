@@ -1,43 +1,62 @@
+class IndecisionApp extends React.Component {
+	render() {
+		const title = "Indecision";
+		const subtitle = "Put your life in the hands of the computer";
+		const options = ["Thing one", "Thing two", "Thing three"];
+		return (
+			<div>
+				<Header title={title} subtitle={subtitle} />
+				<Action />
+				<Options options={options} />
+				<AddOption />
+			</div>
+		);
+	}
+}
+
 class Header extends React.Component {
-    render() {
-        return <div>
-            <h1>Indecision app</h1>
-            <h2>Put your life in the hands of the computer</h2>
-        </div>
-    }
+	render() {
+		return (
+			<div>
+				<h1>{this.props.title}</h1>
+				<h2>{this.props.subtitle}</h2>
+			</div>
+		);
+	}
 }
 
 class Action extends React.Component {
-    render() {
-        return <div>
-            <button>What should I do?</button>
-        </div>
-    }
+	render() {
+		return (
+			<div>
+				<button>What should I do?</button>
+			</div>
+		);
+	}
 }
 
 class Options extends React.Component {
-    render() {
-        return <div>
-            Options component
-        </div>
-    }
+	render() {
+		return (
+			<div>
+				{this.props.options.map(option => (
+					<Option key={option} optionText={option} />
+				))}
+			</div>
+		);
+	}
+}
+
+class Option extends React.Component {
+	render() {
+		return <div>{this.props.optionText}</div>;
+	}
 }
 
 class AddOption extends React.Component {
-    render() {
-        return <div>
-            AddOption component
-        </div>
-    }
+	render() {
+		return <div>AddOption component</div>;
+	}
 }
 
-const jsx = (
-    <div>
-        <Header/>
-        <Action/>
-        <Options/>
-        <AddOption/>
-    </div>
-)
-
-ReactDOM.render(jsx, document.getElementById("app"));
+ReactDOM.render(<IndecisionApp />, document.getElementById("app"));
