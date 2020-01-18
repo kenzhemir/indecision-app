@@ -6,7 +6,7 @@
 	"license": "MIT",
 	"scripts": {
 		"start-src": "babel src/app.js --out-file=public/scripts/app.js --watch --presets=env,react",
-		"start-plg": "babel src/playground/build-it-visible.js --out-file=public/scripts/app.js --watch --presets=env,react"
+		"start-plg": "babel src/playground/counter-example.js --out-file=public/scripts/app.js --watch --presets=env,react"
 	},
 	"devDependencies": {
 		"babel-preset-env": "^1.7.0",
