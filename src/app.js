@@ -1,19 +1,32 @@
 class IndecisionApp extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			options: props.options
-		};
 		this.handlePick = this.handlePick.bind(this);
 		this.handleAddOption = this.handleAddOption.bind(this);
 		this.handleDeleteOption = this.handleDeleteOption.bind(this);
 		this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
+		this.state = {
+			options: props.options
+		};
 	}
 	componentDidMount() {
-		console.log("fetching data");
+		try {
+			console.log("fetching data");
+			const json = localStorage.getItem("options");
+			const options = JSON.parse(json);
+			if (options) {
+				this.setState(() => ({ options }));
+			}
+		} catch (e) {
+			// nothing
+		}
 	}
 	componentDidUpdate(prevProps, prevState) {
-		console.log("saving data");
+		if (prevState.options.length != this.state.options.length) {
+			console.log("saving data");
+			const json = JSON.stringify(this.state.options);
+			localStorage.setItem("options", json);
+		}
 	}
 	componentWillUnmount() {
 		console.log("cwu");
@@ -85,6 +98,7 @@ const Action = props => (
 const Options = props => (
 	<div>
 		<button onClick={props.handleDeleteOptions}>Remove all</button>
+		{props.options.length === 0 && <p>Please add an option to get started</p>}
 		{props.options.map(option => (
 			<Option
 				key={option}
@@ -115,6 +129,7 @@ class AddOption extends React.Component {
 		const option = e.target.elements.option.value.trim();
 		const error = this.props.handleAddOption(option);
 		this.setState(() => ({ error }));
+		if (!error) e.target.elements.option.value = "";
 	}
 	render() {
 		return (

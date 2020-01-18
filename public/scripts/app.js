@@ -16,25 +16,40 @@ var IndecisionApp = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (IndecisionApp.__proto__ || Object.getPrototypeOf(IndecisionApp)).call(this, props));
 
-		_this.state = {
-			options: props.options
-		};
 		_this.handlePick = _this.handlePick.bind(_this);
 		_this.handleAddOption = _this.handleAddOption.bind(_this);
 		_this.handleDeleteOption = _this.handleDeleteOption.bind(_this);
 		_this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
+		_this.state = {
+			options: props.options
+		};
 		return _this;
 	}
 
 	_createClass(IndecisionApp, [{
 		key: "componentDidMount",
 		value: function componentDidMount() {
-			console.log("fetching data");
+			try {
+				console.log("fetching data");
+				var json = localStorage.getItem("options");
+				var options = JSON.parse(json);
+				if (options) {
+					this.setState(function () {
+						return { options: options };
+					});
+				}
+			} catch (e) {
+				// nothing
+			}
 		}
 	}, {
 		key: "componentDidUpdate",
 		value: function componentDidUpdate(prevProps, prevState) {
-			console.log("saving data");
+			if (prevState.options.length != this.state.options.length) {
+				console.log("saving data");
+				var json = JSON.stringify(this.state.options);
+				localStorage.setItem("options", json);
+			}
 		}
 	}, {
 		key: "componentWillUnmount",
@@ -149,6 +164,11 @@ var Options = function Options(props) {
 			{ onClick: props.handleDeleteOptions },
 			"Remove all"
 		),
+		props.options.length === 0 && React.createElement(
+			"p",
+			null,
+			"Please add an option to get started"
+		),
 		props.options.map(function (option) {
 			return React.createElement(Option, {
 				key: option,
@@ -198,6 +218,7 @@ var AddOption = function (_React$Component2) {
 			this.setState(function () {
 				return { error: error };
 			});
+			if (!error) e.target.elements.option.value = "";
 		}
 	}, {
 		key: "render",
